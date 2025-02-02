@@ -36,7 +36,7 @@ jobs:
           AWS_REGION: us-east-1  # Same as above, adjust region if needed
 
       - name: Apply Terraform Deployment
-        run: terraform apply -auto-approve
+        run: terraform destroy -auto-approve
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
