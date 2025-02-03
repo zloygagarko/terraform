@@ -120,7 +120,7 @@ resource "aws_lb_target_group" "example" {
     timeout             = 5
     healthy_threshold   = 3
     unhealthy_threshold = 3
-    matcher             = 200
+    matcher             = 302
   }
 }
 
