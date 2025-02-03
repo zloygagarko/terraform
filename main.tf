@@ -120,6 +120,7 @@ resource "aws_ecs_task_definition" "example" {
   family                   = "example-task"
   execution_role_arn       = data.aws_iam_role.ecs_execution_role.arn
   task_role_arn            = data.aws_iam_role.ecs_task_role.arn
+  network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]  # Specify Fargate as the launch type
   cpu                      = "256"  # 0.25 vCPU
   memory                   = "512"  # 0.5 GB
