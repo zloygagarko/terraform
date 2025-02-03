@@ -91,7 +91,7 @@ resource "aws_lb_target_group" "example" {
   port     = 80
   protocol = "HTTP"
   vpc_id   = aws_vpc.example.id
-  # target_type = "ip"
+  target_type = "ip"
 
   health_check {
     path                = "/health"
@@ -121,10 +121,10 @@ resource "aws_ecs_task_definition" "example" {
   family                   = "example-task"
   execution_role_arn       = data.aws_iam_role.ecs_execution_role.arn
   task_role_arn            = data.aws_iam_role.ecs_task_role.arn
-  # network_mode             = "awsvpc"
-  # requires_compatibilities = ["FARGATE"]  # Specify Fargate as the launch type
-  # cpu                      = "256"  # 0.25 vCPU
-  # memory                   = "512"  # 0.5 GB
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]  # Specify Fargate as the launch type
+  cpu                      = "256"  # 0.25 vCPU
+  memory                   = "512"  # 0.5 GB
   container_definitions    = jsonencode([{
     name      = "example-container"
     image     = "public.ecr.aws/l6n4l7y8/default/test_wordpress:latest"
@@ -146,6 +146,11 @@ resource "aws_ecs_service" "example" {
   cluster         = aws_ecs_cluster.example.id
   task_definition = aws_ecs_task_definition.example.arn
   desired_count   = 1
+  network_configuration {
+    subnets          = aws_subnet.example[*].id  # Use the subnets you've defined earlier
+    security_groups  = [aws_security_group.example.id]
+    assign_public_ip = "ENABLED"  # Or "DISABLED" based on your use case
+  }
 
   load_balancer {
     target_group_arn = aws_lb_target_group.example.arn
