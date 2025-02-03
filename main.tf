@@ -115,7 +115,6 @@ data "aws_iam_role" "ecs_task_role" {
 
 resource "aws_ecs_cluster" "example" {
   name = "example-cluster"
-  capacity_providers = ["FARGATE"]
 }
 
 resource "aws_ecs_cluster_capacity_providers" "example_capacity_providers" {
@@ -168,6 +167,11 @@ resource "aws_ecs_service" "example" {
     target_group_arn = aws_lb_target_group.example.arn
     container_name   = "example-container"
     container_port   = 80
+  }
+
+  capacity_provider_strategy {
+    capacity_provider = "FARGATE"
+    weight            = 1
   }
 
   depends_on = [aws_lb_target_group.example]  # Ensure the target group is created before the ECS service
