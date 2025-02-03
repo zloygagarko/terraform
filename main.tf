@@ -103,6 +103,30 @@ resource "aws_lb_target_group" "example" {
   }
 }
 
+resource "aws_iam_policy" "ecs_ecr_policy" {
+  name        = "ECS_ECR_Policy"
+  description = "Policy to allow ECS to pull images from ECR"
+  policy      = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = [
+          "ecr:GetAuthorizationToken",
+          "ecr:BatchGetImage",
+          "ecr:BatchCheckLayerAvailability"
+        ]
+        Resource = "arn:aws:ecr:us-east-1:public:repository/l6n4l7y8/default/test_wordpress"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_execution_role_policy_attachment" {
+  role       = data.aws_iam_role.ecs_execution_role.name
+  policy_arn = aws_iam_policy.ecs_ecr_policy.arn
+}
+
 
 data "aws_iam_role" "ecs_execution_role" {
   name = "ecsExecutionRole"
