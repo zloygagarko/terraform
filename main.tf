@@ -115,6 +115,14 @@ data "aws_iam_role" "ecs_task_role" {
 
 resource "aws_ecs_cluster" "example" {
   name = "example-cluster"
+  capacity_providers = ["FARGATE"]
+}
+
+resource "aws_ecs_cluster_capacity_providers" "example_capacity_providers" {
+  cluster_name = aws_ecs_cluster.example.name
+
+  capacity_providers = ["FARGATE"]  # Here you can set the capacity provider to Fargate
+  
   default_capacity_provider_strategy {
     capacity_provider = "FARGATE"
     weight            = 1
