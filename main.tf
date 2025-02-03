@@ -115,6 +115,10 @@ data "aws_iam_role" "ecs_task_role" {
 
 resource "aws_ecs_cluster" "example" {
   name = "example-cluster"
+  default_capacity_provider_strategy {
+    capacity_provider = "FARGATE"
+    weight            = 1
+  }
 }
 
 resource "aws_ecs_task_definition" "example" {
