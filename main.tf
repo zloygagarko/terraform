@@ -149,7 +149,7 @@ resource "aws_ecs_service" "example" {
   network_configuration {
     subnets          = aws_subnet.example[*].id  # Use the subnets you've defined earlier
     security_groups  = [aws_security_group.example.id]
-    assign_public_ip = "ENABLED"  # Or "DISABLED" based on your use case
+    assign_public_ip = true  # Or "DISABLED" based on your use case
   }
 
   load_balancer {
