@@ -91,7 +91,7 @@ resource "aws_lb_target_group" "example" {
   port     = 80
   protocol = "HTTP"
   vpc_id   = aws_vpc.example.id
-  target_type = "ip"
+  # target_type = "ip"
 
   health_check {
     path                = "/health"
@@ -121,10 +121,10 @@ resource "aws_ecs_task_definition" "example" {
   family                   = "example-task"
   execution_role_arn       = data.aws_iam_role.ecs_execution_role.arn
   task_role_arn            = data.aws_iam_role.ecs_task_role.arn
-  network_mode             = "awsvpc"
-  requires_compatibilities = ["FARGATE"]  # Specify Fargate as the launch type
-  cpu                      = "256"  # 0.25 vCPU
-  memory                   = "512"  # 0.5 GB
+  # network_mode             = "awsvpc"
+  # requires_compatibilities = ["FARGATE"]  # Specify Fargate as the launch type
+  # cpu                      = "256"  # 0.25 vCPU
+  # memory                   = "512"  # 0.5 GB
   container_definitions    = jsonencode([{
     name      = "example-container"
     image     = "public.ecr.aws/l6n4l7y8/default/test_wordpress:latest"
